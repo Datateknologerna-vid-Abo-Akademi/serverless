@@ -23,12 +23,12 @@ jobs:
           S3_BUCKET: ${{ secrets.DATE_CONFIG_BUCKET }}
           S3_KEY: ${{ secrets.DATE_FUNCTIONS_ENV }}
         run: |
-          aws s3api get-object --bucket $S3_BUCKET --key $S3_KEY .env --debug
+          aws s3api get-object --bucket $S3_BUCKET --key $S3_KEY .env
 
       - name: Set up DigitalOcean CLI
         uses: digitalocean/action-doctl@v2
         with:
-          token: ${{ secrets.DIGITALOCEAN_ACCESS_TOKEN }}
+          token: ${{ secrets.DIGITALOCEAN_TOKEN }}
 
       - name: Setup serverless
         run: |
