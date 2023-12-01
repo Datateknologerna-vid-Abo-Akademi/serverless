@@ -19,7 +19,7 @@ jobs:
           AWS_SECRET_KEY: ${{ secrets.DO_S3_SECRET_KEY }}
           AWS_ENDPOINT_URL_S3: https://fra1.digitaloceanspaces.com/
         run: |
-          aws s3api get_object --bucket ${{ secrets.DATE_CONFIG_BUCKET }} --key ${{ secrets.DATE_FUNCTIONS_ENV }} .env
+          aws s3api get-object --bucket ${{ secrets.DATE_CONFIG_BUCKET }} --key ${{ secrets.DATE_FUNCTIONS_ENV }} .env
 
       - name: Set up DigitalOcean CLI
         uses: digitalocean/action-doctl@v2
