@@ -1,0 +1,53 @@
+name: Deploy to DigitalOcean
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Get .env from S3
+        env: 
+          AWS_ACCESS_KEY: ${{ secrets.DO_S3_ACCESS_KEY }}
+          AWS_SECRET_KEY: ${{ secrets.DO_S3_SECRET_KEY }}
+          AWS_ENDPOINT_URL_S3: https://fra1.digitaloceanspaces.com/
+        run: |
+          aws s3api get_object --bucket ${{ secrets.DATE_CONFIG_BUCKET }} --key ${{ secrets.DATE_FUNCTIONS_ENV }} .env
+
+      - name: Set up DigitalOcean CLI
+        uses: digitalocean/action-doctl@v2
+        with:
+          token: ${{ secrets.DIGITALOCEAN_ACCESS_TOKEN }}
+
+      - name: Setup serverless
+        run: |
+          doctl serverless install
+        
+      - name: Install python dev requirements
+        run: |
+          pip install -r requirements.txt
+
+      - name: Deploy qa
+        run: |
+          doctl serverless connect date-qa
+          doctl serverless deploy .
+      
+      - name: Smoketest qa
+        run: |
+          ./script/smoketest.sh date-qa
+        
+      - name: deploy prod
+        run: |
+          doctl serverless connect date-prod
+          doctl serverless deploy .
+
+      - name: Smoketest prod
+        run: |
+          ./script/smoketest.sh date-prod
