@@ -1,19 +1,29 @@
 parameters: {}
 environment: {}
 packages:
-    - name: archive
-      shared: false
-      environment: {}
-      parameters: {}
-      annotations: {}
-      functions:
-        - name: image-resizer
-          binary: false
-          main: ""
-          runtime: go:default
-          web: true
-          webSecure: false
-          parameters: {}
-          environment: {}
-          annotations: {}
-          limits: {}
+  - name: archive
+    shared: false
+    environment: {}
+    parameters: {}
+    annotations: {}
+    functions:
+      - name: image-resizer
+        binary: false
+        main: ""
+        runtime: go:default
+        web: true
+        webSecure: false
+        parameters: {}
+        environment: {}
+        annotations: {}
+        limits: {}
+      - name: image-uploader
+        binary: false
+        main: ""
+        runtime: go:default
+        web: true
+        webSecure: false
+        parameters: {}
+        environment: {}
+        annotations: {}
+        limits: {}
